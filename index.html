@@ -1,60 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Flappy bird ahh</title>
-    <link rel="stylesheet" href="./style.css">
-
-  </head>
-    
-  <body>
-  <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Flappy Duo</title>
+<meta charset="UTF-8" />
+<title>Dual Bird Boss Run</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+canvas {
+  display: block;
+}
+
+/* ---------- MAIN MENU ---------- */
+#menuScreen {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(#70c5ce, #3b9ecb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.menuBox {
+  background: rgba(0,0,0,0.65);
+  border-radius: 16px;
+  padding: 30px 40px;
+  width: 420px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 0 40px rgba(0,0,0,0.5);
+}
+
+.menuTitle {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.menuBtn {
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  font-size: 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background: #ffcc00;
+  color: #000;
+  font-weight: bold;
+}
+
+.menuBtn:hover {
+  background: #ffd633;
+}
+
+/* ---------- SUB PANELS ---------- */
+.panel {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.panel h2 {
+  margin-bottom: 10px;
+}
+
+.panel p {
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.backBtn {
+  margin-top: 20px;
+  background: #ff7675;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ---------- OVERLAYS YOU ALREADY USE ---------- */
+#overlay, #endScreen {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9;
+}
+</style>
 </head>
+
 <body>
 
-<div id="game">
+<!-- ---------- MENU ---------- -->
+<div id="menuScreen">
+  <div class="menuBox">
 
-  <div id="score">0</div>
-  <div id="tap-text">Press W or L to Start</div>
-  <div id="popup"></div>
+    <div id="mainMenu">
+      <div class="menuTitle">DUAL BIRD BOSS RUN</div>
+      <button class="menuBtn" onclick="openPanel('play')">PLAY</button>
+      <button class="menuBtn" onclick="openPanel('controls')">CONTROLS</button>
+      <button class="menuBtn" onclick="openPanel('about')">ABOUT</button>
+    </div>
 
-  <!-- Pipes -->
-  <div class="pipe pipe-top"></div>
-  <div class="pipe pipe-bottom"></div>
+    <div id="controlsPanel" class="panel">
+      <h2>Controls</h2>
+      <p>
+        🟡 Yellow Bird: <b>W</b><br>
+        🔴 Red Bird: <b>L</b><br><br>
+        Avoid pipes, dodge boss pellets, survive Phase 2.
+      </p>
+      <button class="menuBtn backBtn" onclick="goBack()">Back</button>
+    </div>
 
-  <!-- Bird 1 -->
-  <div id="bird1" class="bird yellow">
-    <div class="wing"></div>
-    <div class="eye"></div>
-    <div class="pupil"></div>
-    <div class="beak"></div>
+    <div id="aboutPanel" class="panel">
+      <h2>About</h2>
+      <p>
+        About me (ANGAD) made this game.<br><br>
+        This is a custom dual-player Flappy-style boss game
+        with revive mechanics, particles, and multi-phase AI.
+      </p>
+      <button class="menuBtn backBtn" onclick="goBack()">Back</button>
+    </div>
+
+    <div id="playPanel" class="panel">
+      <h2>Ready?</h2>
+      <p>Survive together. Phase 2 gets brutal.</p>
+      <button class="menuBtn" onclick="startFromMenu()">START GAME</button>
+      <button class="menuBtn backBtn" onclick="goBack()">Back</button>
+    </div>
+
   </div>
-
-  <!-- Bird 2 -->
-  <div id="bird2" class="bird blue">
-    <div class="wing"></div>
-    <div class="eye"></div>
-    <div class="pupil"></div>
-    <div class="beak"></div>
-  </div>
-
-  <!-- Game Over -->
-  <div id="game-over-menu">
-    <h1>Game Over</h1>
-    <p id="final-score">Score: 0</p>
-    <button id="restart-btn">Restart</button>
-  </div>
-
 </div>
 
-</body>
-</html>
-    <script  src="./script.js"></script>
+<!-- ---------- GAME ---------- -->
+<canvas id="game"></canvas>
 
-  </body>
-  
+<div id="overlay"></div>
+
+<div id="endScreen">
+  <div style="color:white;text-align:center;">
+    <h1 id="endText"></h1>
+    <button onclick="restartGame()" class="menuBtn">Restart</button>
+  </div>
+</div>
+
+<script src="game.js"></script>
+
+<script>
+function openPanel(which) {
+  document.getElementById("mainMenu").style.display = "none";
+  document.getElementById("controlsPanel").style.display = "none";
+  document.getElementById("aboutPanel").style.display = "none";
+  document.getElementById("playPanel").style.display = "none";
+
+  if (which === "controls") document.getElementById("controlsPanel").style.display = "block";
+  if (which === "about") document.getElementById("aboutPanel").style.display = "block";
+  if (which === "play") document.getElementById("playPanel").style.display = "block";
+}
+
+function goBack() {
+  document.getElementById("controlsPanel").style.display = "none";
+  document.getElementById("aboutPanel").style.display = "none";
+  document.getElementById("playPanel").style.display = "none";
+  document.getElementById("mainMenu").style.display = "block";
+}
+
+function startFromMenu() {
+  document.getElementById("menuScreen").style.display = "none";
+  startGame(); // ← your existing function
+}
+
+function restartGame() {
+  document.getElementById("endScreen").style.display = "none";
+  startGame();
+}
+</script>
+
+</body>
 </html>
