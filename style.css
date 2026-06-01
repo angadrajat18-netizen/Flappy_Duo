@@ -6,155 +6,50 @@
 }
 
 body {
-  background: #70c5ce;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-#game {
-  position: relative;
-  width: 320px;
-  height: 500px;
-  background: linear-gradient(#70c5ce, #bdefff);
   overflow: hidden;
-  border-radius: 10px;
+  background: #000;
 }
 
-/* UI */
-#score {
+canvas {
   position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 36px;
-  color: white;
-  text-shadow: 2px 2px black;
-  z-index: 10;
-}
-
-#tap-text {
-  position: absolute;
-  top: 55%;
-  width: 100%;
-  text-align: center;
-  color: white;
-  font-size: 18px;
-  text-shadow: 2px 2px black;
-  z-index: 10;
-}
-
-#popup {
-  position: absolute;
-  top: 40%;
-  width: 100%;
-  text-align: center;
-  font-size: 32px;
-  font-weight: bold;
-  color: #fff;
-  text-shadow: 2px 2px black;
-  opacity: 0;
-  transform: scale(1);
-  transition: 0.3s;
-  z-index: 10;
-}
-
-/* Pipes */
-.pipe {
-  position: absolute;
-  width: 60px;
-  background: linear-gradient(#2ecc71, #27ae60);
-}
-
-.pipe-top {
   top: 0;
+  left: 0;
+  z-index: 1;
 }
 
-.pipe-bottom {
-  bottom: 0;
-}
-
-/* Birds */
-.bird {
-  position: absolute;
-  width: 34px;
-  height: 26px;
-  border-radius: 50% 50% 45% 45%;
-}
-
-.yellow {
-  background: radial-gradient(circle at 30% 30%, #fff3a0, #f1c40f);
-}
-
-.blue {
-  background: radial-gradient(circle at 30% 30%, #b3e5ff, #3498db);
-}
-
-#bird1 { left: 60px; top: 180px; }
-#bird2 { left: 100px; top: 260px; }
-
-/* Bird details */
-.wing {
-  position: absolute;
-  width: 16px;
-  height: 12px;
-  background: rgba(0,0,0,0.25);
-  left: 6px;
-  top: 12px;
-  border-radius: 50%;
-  animation: flap 0.25s infinite alternate;
-}
-
-@keyframes flap {
-  to { transform: rotate(-25deg); }
-}
-
-.eye {
-  position: absolute;
-  width: 7px;
-  height: 7px;
-  background: white;
-  border-radius: 50%;
-  top: 6px;
-  left: 20px;
-}
-
-.pupil {
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  background: black;
-  border-radius: 50%;
-  top: 8px;
-  left: 22px;
-}
-
-.beak {
-  position: absolute;
-  width: 10px;
-  height: 6px;
-  background: orange;
-  right: -9px;
-  top: 10px;
-  clip-path: polygon(0 0, 100% 50%, 0 100%);
-}
-
-/* Game Over */
-#game-over-menu {
+/* START / END OVERLAY */
+#overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.6);
-  display: none;
+  z-index: 2;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: rgba(0, 0, 0, 0.6);
   color: white;
-  z-index: 20;
 }
 
-#game-over-menu button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
+#overlay h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+#overlay p {
+  font-size: 20px;
+  margin: 10px 0;
+}
+
+#startBtn {
+  padding: 12px 30px;
+  font-size: 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  background: #4cd137;
+  color: black;
+}
+
+#startBtn:hover {
+  background: #44bd32;
 }
